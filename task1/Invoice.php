@@ -127,7 +127,7 @@ class Invoice  implements IteratorAggregate
         return $sum;
     }
 
-    public function save(MysqlConnect $mysqlConnect)
+    public function save(mysqli &$mysqlConnect)
     {
         $date = date('Y-m-d', strtotime($this->date));
         $mysqlConnect->queryMysqlConnect(
@@ -145,7 +145,7 @@ class Invoice  implements IteratorAggregate
 
     }
 
-    public static function getInvoicesDB(MysqlConnect $mysqlConnect, string $select = '*', string $where = null) : array
+    public static function getInvoicesDB(mysqli &$mysqlConnect, string $select = '*', string $where = null) : array
     {
         $where = $where ? 'WHERE ' . $where : "";
         $result = $mysqlConnect->query(

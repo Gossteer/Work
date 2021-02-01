@@ -1,15 +1,17 @@
 <?php
 
+include_once 'Singleton.php';
+include_once 'GetConfig.php';
 include_once 'MysqlConnect.php';
+include_once 'ConnectOne.php';
 include_once 'Invoice.php';
 include_once 'InvoiceComposition.php';
 
 
-$mysqlConnect = new MysqlConnect('127.0.0.1', 'root', 'root');
-
+$mysqlConnect = ConnectOne::getInstance();
 $mysqlConnect->query("CREATE DATABASE database_name CHARACTER SET utf8 COLLATE utf8_general_ci;");
 
-//echo $mysqlConnect->host_info . "\n" ;
+echo $mysqlConnect->host_info . "\n" ;
 
 $invoces = new Invoice(100, 1, '06.11.1917');
 
