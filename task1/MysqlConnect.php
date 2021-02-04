@@ -2,8 +2,6 @@
 
 trait MysqlConnect
 {
-    use Singleton;
-
     public function queryMysqlConnect(string $query)
     {
         return parent::query($query);
@@ -11,16 +9,12 @@ trait MysqlConnect
 
     public function __destruct()
     {
-        if ($this->close()) {
-            echo "Подключение было закрыто.";
-        } else {
-            echo "Не удалось закрыть подключение.";
-        }
+        $this->close();
     }
 
     protected function __construct() {
-        $config = GetConfig::getInstance()->__get(__CLASS__);
-        extract($config);
+//        list('host' => $host, 'username' => $username, 'passwd' => $passwd, 'dbname' => $dbname, 'port' => $port, 'socket' => $socket) = GetConfig::getInstance()->__get(__CLASS__); // Notice: Undefined
+        extract(GetConfig::getInstance()->__get(__CLASS__));
         parent::__construct($host, $username, $passwd, $dbname ?? null, $port ?? null, $socket ?? null);
 //        $this->queryMysqlConnect(
 //            "CREATE TABLE Invoice (
