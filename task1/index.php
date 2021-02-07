@@ -19,14 +19,14 @@ for ($i = 1; $i < 5; $i++)
 {
     $invoces->addInvoiceComposition($i, "name $i", $i, $i);
 }
-$invoces->save($mysqlConnect);
+$invoces->saveBD($mysqlConnect);
 
 $invoces = new Invoice(34, 1);
 for ($i = 1; $i < 5; $i++)
 {
     $invoces->addInvoiceComposition($i, "name $i", $i, $i);
 }
-$invoces->save($mysqlConnect);
+$invoces->saveBD($mysqlConnect);
 
 $invoces = Invoice::getInvoicesDB($mysqlConnect, '*', "status = 'Оплачен' and date > '2020-01-01'");
 foreach ($invoces as $invoce)

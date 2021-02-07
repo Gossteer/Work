@@ -18,7 +18,6 @@ function unset_string(array &$array) : array
 
 function intersect(array &$array1, array &$array2) : array
 {
-    $array = array();
     foreach ($array1 as $value1)
     {
         foreach ($array2 as $value2)
@@ -57,4 +56,4 @@ $endTime = new DateTime('now');
 
 echo $startTime->diff($endTime)->format('%S секунд, %f  микросекунд') . "кб\n";
 
-echo round(memory_get_usage() / 1024, 2)  . "кб\n";
+echo memory_get_usage() / 1024  . "кб\n";

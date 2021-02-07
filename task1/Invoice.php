@@ -127,7 +127,7 @@ class Invoice  implements IteratorAggregate
         return $sum;
     }
 
-    public function save(mysqli &$mysqlConnect)
+    public function saveBD(mysqli &$mysqlConnect)
     {
         $date = date('Y-m-d', strtotime($this->date));
         $mysqlConnect->queryMysqlConnect(
