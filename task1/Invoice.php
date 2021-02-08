@@ -22,7 +22,9 @@ class Invoice  implements IteratorAggregate
     public float $discount;
     private $invoiceComposition = array();
 
-    public function __construct(int $number, int $status = 0, string $date = null, float $discount = 0)
+
+
+    public function __construct(int $number, int $status = 0, string $date = null, float $discount = 0 )
     {
         $this->setNumber($number);
         $this->setStatus($status);
@@ -127,7 +129,7 @@ class Invoice  implements IteratorAggregate
         return $sum;
     }
 
-    public function saveBD(mysqli &$mysqlConnect)
+    public function saveBD(iConnect &$mysqlConnect)
     {
         $date = date('Y-m-d', strtotime($this->date));
         $mysqlConnect->queryMysqlConnect(
@@ -144,15 +146,42 @@ class Invoice  implements IteratorAggregate
         }
 
     }
-
-    public static function getInvoicesDB(mysqli &$mysqlConnect, string $select = '*', string $where = null) : array
+//Посмотреть сортировку с векторами, которая будет возвращать поля с опр. invoice_id, чтобы сделать один запрос с join (а не 1000 отдельных, для каждого счёта)
+    public static function getInvoicesDBAll(iConnectGet &$mysqlConnect, array $select = ['*']) : array
     {
+        $result = $mysqlConnect->fetchAll("SELECT " . implode(', ',$select) . " FROM Invoice", []);
+        var_dump($result);
+        if (!$result)
+        {
+            throw new Exception('Записи не найдены');
+        } else
+        {
+//            $vector = new \Ds\Vector();
+            foreach ($result as $row){
+                $invoces[] = new Invoice($row['number'], array_search($row['status'], STATUS), $row['date'], $row['discount']);
+//                $vector->push(new Invoice($row['number'], array_search($row['status'], STATUS), $row['date'], $row['discount']));
+                $recultCompositions = $mysqlConnect->fetchAll("SELECT * FROM invoicecomposition WHERE invoice_id = :invoice_id", [':invoice_id' => $row['number']]);
+                if (!$recultCompositions)
+                {
+                    continue;
+                }
+                foreach ($recultCompositions as $rowCompositions)
+                {
+                    $invoces[count($invoces) - 1]->addInvoiceComposition($rowCompositions['id'], $rowCompositions['name'], $rowCompositions['sum'], $rowCompositions['count']);
+//                    $vector->get($vector->count() - 1)->addInvoiceComposition($rowCompositions['id'], $rowCompositions['name'], $rowCompositions['sum'], $rowCompositions['count']);
+                }
+            }
+            return $invoces;
+//            return $vector->toArray();
+        }
+
+    }
+    //getInvocesWhere с двумерным где первое, это название атрибута, второе это его условие и значение условия
+    public static function getInvoicesDBWhere(iConnectGet &$mysqlConnect, string $select = '*', string $where = null) : array
+    {
+        die('Функа не реализованна');
         $where = $where ? 'WHERE ' . $where : "";
-        $result = $mysqlConnect->query(
-            "
-                SELECT $select FROM Invoice $where
-            "
-        );
+        $result = $mysqlConnect->fetchAll("SELECT $select FROM Invoice $where");
         if ($result->num_rows == 0)
         {
             throw new Exception('Записи не найдены');

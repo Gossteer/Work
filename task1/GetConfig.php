@@ -7,12 +7,11 @@ class GetConfig
 
     private function __construct()
     {
-        $this->config = parse_ini_file('.ini', true);
-//        var_dump($this->config);
+        $this->config = json_decode( file_get_contents('config.json'), true);
     }
 
-    public function __get($namesection)
+    public function getConfigAttributes(string $section) : array
     {
-        return $this->config[$namesection];
+        return $this->config[$section];
     }
 }

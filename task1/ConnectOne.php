@@ -1,6 +1,6 @@
 <?php
 
-class ConnectOne  extends mysqli {
-    use MysqlConnect;
+class ConnectOne implements iConnectGet , iConnectSet {
+    use Connect;
     use Singleton;
 }
