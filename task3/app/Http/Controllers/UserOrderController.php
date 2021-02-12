@@ -13,9 +13,9 @@ class UserOrderController extends Controller
         return view('userorder.userorders', ['userorders' => UserOrder::all()]);
     }
 
-    public function delete($id) : int
+    public function delete(UserOrder $userorder) : int
     {
-        UserOrder::findOrFail($id)->delete();
+        $userorder->delete();
 
         return 1;
     }

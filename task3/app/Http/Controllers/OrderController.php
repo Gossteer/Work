@@ -43,13 +43,13 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) : int
+    public function update(Request $request, Order $order) : int
     {
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
 
-        Order::findOrFail($id)->update([
+        $order->update([
             'name' => $request->name
         ]);
 
@@ -62,9 +62,9 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) : int
+    public function destroy(Order $order) : int
     {
-        Order::findOrFail($id)->delete();
+        $order->delete();
 
         return 1;
     }

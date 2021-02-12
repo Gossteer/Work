@@ -76,37 +76,19 @@
 </x-app-layout>
 
 
-<script  type="application/javascript">
+<script  type="application/javascript" defer>
     @if(Auth::user()->admin)
-    function deleteUserOrder($selector) {
-        $.ajax({
-            url: '{{ url('user-order') }}/' + $selector,
-            type: "DELETE",
-            data: {id:$selector},
-            headers: {
-                'X-CSRF-Token': document.getElementsByName("_token")[0].value
-            },
-            success: function (data) {
-                document.querySelector("#userorder"+$selector).remove();
-            },
-
-            error: function (msg) {
-                alert('Ошибка');
-            }
-
-        });
-    }
 
     function deleteOrder($selector) {
         $.ajax({
             url: '{{ url('order') }}/' + $selector,
             type: "DELETE",
-            data: {id:$selector},
             headers: {
                 'X-CSRF-Token': document.getElementsByName("_token")[0].value
             },
             success: function (data) {
                 document.querySelector("#order"+$selector).remove();
+                document.querySelector("#cardorder"+$selector).remove();
             },
 
             error: function (msg) {
@@ -117,14 +99,16 @@
     }
 
     function update($selector) {
+        let name = document.getElementById('nametr'+$selector).value
         $.ajax({
             url: '{{ url('order') }}/' + $selector,
             type: "PUT",
-            data: {id:$selector, name:document.getElementById('nametr'+$selector).value},
+            data: {name:name},
             headers: {
                 'X-CSRF-Token': document.getElementsByName("_token")[0].value
             },
             success: function (data) {
+                document.getElementById("cardordername"+$selector).innerHTML = name;
             },
 
             error: function (msg) {

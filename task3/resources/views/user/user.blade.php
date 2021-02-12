@@ -36,7 +36,7 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        name="password"
+                        name="password"  autocomplete="new-password"
                         type="password" placeholder="{{__('Password')}}" required>
                 </div>
                 <div class="mb-4">
@@ -45,7 +45,7 @@
                     </label>
                     <input
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        name="password_confirmation"
+                        name="password_confirmation" autocomplete="new-password"
                         type="password" placeholder="{{__('Confirm Password')}}" required>
                 </div>
             </x-slot>
@@ -105,7 +105,6 @@
         $.ajax({
             url: '{{ url('user') }}/' + $selector,
             type: "DELETE",
-            data: {id:$selector},
             headers: {
                 'X-CSRF-Token': document.getElementsByName("_token")[0].value
             },

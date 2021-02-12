@@ -51,7 +51,6 @@
         $.ajax({
             url: '{{ url('user-order') }}/' + $selector,
             type: "DELETE",
-            data: {id:$selector},
             headers: {
                 'X-CSRF-Token': document.getElementsByName("_token")[0].value
             },

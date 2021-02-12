@@ -75,9 +75,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) : int
+    public function update(Request $request, User $user) : int
     {
-        User::findOrFail($id)->update([
+        $user->update([
             'name' => $request->name,
             'email' => $request->email
         ]);
@@ -91,9 +91,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) : int
+    public function destroy(User $user) : int
     {
-        User::findOrFail($id)->delete();
+        $user->delete();
 
         return 1;
     }

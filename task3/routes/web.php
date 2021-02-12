@@ -26,8 +26,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['middleware' => ['isadmin']], function () {
         Route::resource('user', UserController::class);
         Route::post('order', [OrderController::class, 'store'])->name('order.store');
-        Route::delete('order/{order}', [OrderController::class, 'delete'])->name('order.destroy ');
-        Route::delete('user-order/{id}', [UserOrderController::class, 'delete'])->name('userorder.destroy');
+        Route::put('order/{order}', [OrderController::class, 'update'])->name('order.update');
+        Route::delete('order/{order}', [OrderController::class, 'destroy'])->name('order.destroy ');
+        Route::delete('user-order/{userorder}', [UserOrderController::class, 'delete'])->name('userorder.destroy');
         Route::get('user-order', [UserOrderController::class, 'index'])->name('userorder.index');
     });
 });
