@@ -10,7 +10,7 @@ class UserOrderController extends Controller
 {
     public function index()
     {
-        return view('userorder.userorders', ['userorders' => UserOrder::all()]);
+        return view('userorder.userorders', ['userorders' => UserOrder::with('user')->get()]);
     }
 
     public function delete(UserOrder $userorder) : int
