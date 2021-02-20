@@ -17,13 +17,13 @@ $mysqlConnect = ConnectOne::getInstance();
 
 echo $mysqlConnect->host_info() . "\n" ;
 
-//$invoces = new Invoice(100, 1, '06.11.1917');
-//
-//for ($i = 1; $i < 5; $i++)
-//{
-//    $invoces->addInvoiceComposition($i, "name $i", $i, $i);
-//}
-//$invoces->saveBD($mysqlConnect);
+$invoces = new Invoice(353, 1, '06.11.1917');
+
+for ($i = 1; $i < 3; $i++)
+{
+    $invoces->addInvoiceComposition($i, "name $i", $i, $i);
+}
+$invoces->saveBD($mysqlConnect);
 //
 //$invoces = new Invoice(34, 1);
 //for ($i = 1; $i < 5; $i++)

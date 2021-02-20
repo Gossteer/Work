@@ -104,16 +104,6 @@ class Invoice  implements IteratorAggregate
         unset($this->invoiceComposition[$id]);
     }
 
-//    public function __set($name, $value)
-//    {
-//        $this->$name = $value;
-//    }
-//
-//    public function __get($name)
-//    {
-//        return $this->$name;
-//    }
-
     /**
      * @return int SummInvoice with discoutn
      */
@@ -129,20 +119,25 @@ class Invoice  implements IteratorAggregate
         return $sum;
     }
 
-    public function saveBD(iConnect &$mysqlConnect)
+    public function saveBD(iConnectSet &$mysqlConnect)
     {
         $date = date('Y-m-d', strtotime($this->date));
-        $mysqlConnect->queryMysqlConnect(
+        if (!$mysqlConnect->insert(
             "INSERT INTO Invoice (number, status, date, discount)
-                VALUES ($this->number, '$this->status', '$date', $this->discount)"
-        );
-
+                VALUES (:number, :status, :date, :discount)"
+            ,[':number' => $this->number, ':status' => $this->status, ':date' => $date,':discount' => $this->discount]))
+        {
+            throw new Exception('Данные не были записаны');
+        }
         foreach ($this->invoiceComposition as $invoiceComposition)
         {
-            $mysqlConnect->queryMysqlConnect(
+            if (!$mysqlConnect->insert(
                 "INSERT INTO InvoiceComposition (sum, count, name, invoice_id)
-                VALUES ($invoiceComposition->sum, '$invoiceComposition->count', '$invoiceComposition->name', '$this->number')"
-            );
+                VALUES (:sum, :count, :name, :invoice_id)"
+                ,[':sum'=> $invoiceComposition->sum, ':count' => $invoiceComposition->count, ':name' => $invoiceComposition->name, ':invoice_id' => $this->number]))
+            {
+                trigger_error("Состав чека $invoiceComposition->name не был добавлен", E_USER_WARNING);
+            }
         }
 
     }
@@ -150,7 +145,6 @@ class Invoice  implements IteratorAggregate
     public static function getInvoicesDBAll(iConnectGet &$mysqlConnect, array $select = ['*']) : array
     {
         $result = $mysqlConnect->fetchAll("SELECT " . implode(', ',$select) . " FROM Invoice", []);
-        var_dump($result);
         if (!$result)
         {
             throw new Exception('Записи не найдены');
@@ -179,7 +173,7 @@ class Invoice  implements IteratorAggregate
     //getInvocesWhere с двумерным где первое, это название атрибута, второе это его условие и значение условия
     public static function getInvoicesDBWhere(iConnectGet &$mysqlConnect, string $select = '*', string $where = null) : array
     {
-        die('Функа не реализованна');
+        die('Фунция не реализованна');
         $where = $where ? 'WHERE ' . $where : "";
         $result = $mysqlConnect->fetchAll("SELECT $select FROM Invoice $where");
         if ($result->num_rows == 0)
